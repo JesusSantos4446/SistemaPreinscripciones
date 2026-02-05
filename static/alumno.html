@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5">
+	<meta name="author" content="AdminKit">
+	<meta name="keywords" content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
+
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link rel="shortcut icon" href="/src/img/icons/icono-Itace.png" />
+
+	<title>Confirmar datos</title>
+
+	<link href="css/app.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+	<div class="wrapper">
+		<nav id="sidebar" class="sidebar js-sidebar">
+			<div class="sidebar-content js-simplebar">
+				<a class="sidebar-brand" href="index.html">
+         <span class="align-middle ms-3">
+			
+        <div style="
+          position: relative;
+          height: 110px;              
+          overflow: hidden;        
+        ">
+          <img
+            src="img/icons/ITACE.png"
+            alt="Escuela logo"
+            style="
+              position: absolute;      
+              top: -50px;             
+              left: 50%;
+              transform: translateX(-50%);
+              height: 150px;           
+              width: auto;
+              display: block;
+            "
+          >
+        </div>
+			</span>
+        </a>
+
+		<ul class="sidebar-nav">
+		<li class="sidebar-header"></li>
+
+		<li class="sidebar-item">
+			<div class="steps-vertical" id="wizardSteps">
+
+			<a href="index.html" class="step-vertical" data-step="0">
+				<div class="step-vertical-icon">
+				<i class="fa-solid fa-check"></i>
+				</div>
+				<div class="step-vertical-content">
+				<div class="step-vertical-title">Preinscripción</div>
+				<div class="step-vertical-desc">Datos iniciales</div>
+				</div>
+			</a>
+
+			<a href="alumno.html" class="step-vertical" data-step="1">
+				<div class="step-vertical-icon">
+				<i class="fa-solid fa-user-check"></i>
+				</div>
+				<div class="step-vertical-content">
+				<div class="step-vertical-title">Confirmar datos</div>
+				<div class="step-vertical-desc">Verifica tu información</div>
+				</div>
+			</a>
+
+			<!-- Si ya tienes página final, cámbialo a <a href="finalizar.html"...> -->
+			<a href="finalizar.html" class="step-vertical" data-step="2">
+				<div class="step-vertical-icon">
+				<i class="fa-solid fa-flag-checkered"></i>
+				</div>
+				<div class="step-vertical-content">
+				<div class="step-vertical-title">Finalizar</div>
+				<div class="step-vertical-desc">Enviar solicitud</div>
+				</div>
+			</a>
+
+			</div>
+		</li>
+		</ul>
+
+		<style>
+		.steps-vertical{
+			padding: 12px 14px 12px 18px;
+			margin: 8px 10px;
+			border-left: 3px solid rgba(255,255,255,.2);
+		}
+
+		.step-vertical{
+			position: relative;
+			display: flex;
+			gap: 12px;
+			padding: 10px;
+			margin-bottom: 12px;
+			border-radius: .4rem;
+			text-decoration: none;
+			color: rgba(255,255,255,.9);
+			opacity: .55;
+		}
+
+		.step-vertical::before{
+			content: "";
+			position: absolute;
+			left: -11px;
+			top: 18px;
+			width: 12px;
+			height: 12px;
+			border-radius: 50%;
+			background: rgba(255,255,255,.3);
+		}
+
+		.step-vertical-icon{
+			width: 34px;
+			height: 34px;
+			display: grid;
+			place-items: center;
+			border-radius: .5rem;
+			background: rgba(255,255,255,.1);
+			flex: 0 0 34px;
+		}
+
+		.step-vertical-icon i{
+			font-size: 15px;
+			color: rgba(255,255,255,.95);
+		}
+
+		.step-vertical-title{
+			font-size: .95rem;
+			font-weight: 600;
+			line-height: 1.1;
+		}
+
+		.step-vertical-desc{
+			font-size: .78rem;
+			opacity: .8;
+			margin-top: 2px;
+		}
+
+		.step-vertical.active{
+			opacity: 1;
+			background: rgba(255,255,255,.06);
+			border: 1px solid rgba(255,255,255,.12);
+		}
+
+		.step-vertical.active::before{
+			background: #4D0218;
+		}
+
+		.step-vertical.complete{
+			opacity: 1;
+		}
+
+		.step-vertical.complete::before{
+			background: #198754;
+		}
+
+		.step-vertical.complete .step-vertical-icon i{
+			color: #198754;
+		}
+		</style>
+
+				
+		</nav>
+
+		<div class="main">
+			<nav class="navbar navbar-expand navbar-light navbar-bg">
+				<a class="sidebar-toggle js-sidebar-toggle">
+          <i class="hamburger align-self-center"></i>
+        </a>
+				<div class="navbar-collapse collapse">
+					<ul class="navbar-nav navbar-align">
+						<li class="nav-item dropdown">
+							<a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
+                <i class="align-middle" data-feather="settings"></i>
+              </a>
+
+			</nav>
+
+			<main class="content">
+				<div class="container-fluid p-0">
+
+					<div class="mb-3">
+					<h1 class="h3 d-inline align-middle">Confirmación de los datos del aspirante</h1>
+
+					<div class="card mt-4 mb-4">
+						<div class="card-header fw-bold">
+							DATOS GENERALES
+
+
+						<div class="card-body row g-3">
+
+							<div class="col-md-4">
+							<label class="form-label">Apellido Paterno</label>
+							<div class="form-control bg-light">
+								<span id="txtApellidoPaterno"></span>
+							</div>
+							</div>
+
+							<div class="col-md-4">
+							<label class="form-label">Apellido Materno</label>
+							<div class="form-control bg-light">
+								<span id="txtApellidoMaterno"></span>
+							</div>
+							</div>
+
+							<div class="col-md-4">
+							<label class="form-label">Nombre(s)</label>
+							<div class="form-control bg-light">
+								<span id="txtNombres"></span>
+							</div>
+							</div>
+
+							<div class="col-md-3">
+							<label class="form-label">Género</label>
+							<div class="form-control bg-light">
+								<span id="txtGenero"></span>
+							</div>
+							</div>
+
+							<div class="col-md-3">
+							<label class="form-label">Fecha de nacimiento</label>
+							<div class="form-control bg-light">
+								<span id="txtFechaNacimiento"></span>
+							</div>
+							</div>
+
+							<div class="col-md-3">
+							<label class="form-label">Estado civil</label>
+							<div class="form-control bg-light">
+								<span id="txtEstadoCivil"></span>
+							</div>
+							</div>
+
+							<div class="col-md-3">
+							<label class="form-label">Nacionalidad</label>
+							<div class="form-control bg-light">
+								<span id="txtNacionalidad"></span>
+							</div>
+							</div>
+
+							<!-- Lugar de nacimiento (solo si aplica) -->
+							<div class="card mb-4 d-none" id="lugarNacimientoCard">
+							<div class="card-header fw-bold">Lugar de nacimiento</div>
+							<div class="card-body row g-3">
+
+								<div class="col-md-6">
+								<label class="form-label">Estado</label>
+								<div class="form-control bg-light">
+									<span id="txtEstadoNacimiento"></span>
+								</div>
+								</div>
+
+								<div class="col-md-6">
+								<label class="form-label">Municipio</label>
+								<div class="form-control bg-light">
+									<span id="txtMunicipioNacimiento"></span>
+								</div>
+								</div>
+
+							</div>
+							</div>
+
+							<!-- CURP -->
+							<div class="col-md-6">
+							<label class="form-label">CURP</label>
+
+							<div class="d-flex gap-2">
+								<div class="form-control bg-light flex-grow-1" style="text-transform:uppercase;">
+								<span id="txtCurp"></span>
+								</div>
+							</div>
+							</div>
+
+						</div>
+						</div>
+
+
+
+					<div class="card mb-4 mt-4">
+					<div class="card-header fw-bold text-uppercase">Domicilio</div>
+
+					<div class="card-body row g-3">
+
+						<div class="col-md-6">
+						<label class="form-label">Calle</label>
+						<div class="form-control bg-light">
+							<span id="txtCalle"></span>
+						</div>
+						</div>
+
+						<div class="col-md-3">
+						<label class="form-label">Número exterior</label>
+						<div class="form-control bg-light">
+							<span id="txtNumExt"></span>
+						</div>
+						</div>
+
+						<div class="col-md-3">
+						<label class="form-label">Número interior</label>
+						<div class="form-control bg-light">
+							<span id="txtNumInt"></span>
+						</div>
+						</div>
+
+						<div class="col-md-4">
+						<label class="form-label">Código Postal</label>
+						<div class="form-control bg-light">
+							<span id="txtCP"></span>
+						</div>
+						</div>
+
+						<div class="col-md-4">
+						<label class="form-label">Colonia</label>
+						<div class="form-control bg-light">
+							<span id="txtColonia"></span>
+						</div>
+						</div>
+
+						<div class="col-md-4">
+						<label class="form-label">Estado</label>
+						<div class="form-control bg-light">
+							<span id="txtEstado"></span>
+						</div>
+						</div>
+
+						<div class="col-md-4">
+						<label class="form-label">Municipio</label>
+						<div class="form-control bg-light">
+							<span id="txtMunicipio"></span>
+						</div>
+						</div>
+
+						<div class="col-md-6">
+						<label class="form-label">Correo electrónico</label>
+						<div class="form-control bg-light">
+							<span id="txtEmail"></span>
+						</div>
+						</div>
+
+						<div class="col-md-6">
+						<label class="form-label">Teléfono</label>
+						<div class="form-control bg-light">
+							<span id="txtTelefono"></span>
+						</div>
+						</div>
+
+					</div>
+					</div>
+
+					<div class="card mb-4 mt-4">
+					<div class="card-header fw-bold text-uppercase">Datos del tutor o responsable legal</div>
+
+					<div class="card-body row g-3">
+
+						<div class="col-md-4">
+						<label class="form-label">Parentesco</label>
+						<div class="form-control bg-light">
+							<span id="txtTutorParentesco"></span>
+						</div>
+						</div>
+
+						<div class="col-md-4">
+						<label class="form-label">Apellido paterno</label>
+						<div class="form-control bg-light">
+							<span id="txtTutorApPaterno"></span>
+						</div>
+						</div>
+
+						<div class="col-md-4">
+						<label class="form-label">Apellido materno</label>
+						<div class="form-control bg-light">
+							<span id="txtTutorApMaterno"></span>
+						</div>
+						</div>
+
+						<div class="col-md-6">
+						<label class="form-label">Nombre(s)</label>
+						<div class="form-control bg-light">
+							<span id="txtTutorNombres"></span>
+						</div>
+						</div>
+
+						<div class="col-md-3">
+						<label class="form-label">Teléfono de casa</label>
+						<div class="form-control bg-light">
+							<span id="txtTutorTelCasa"></span>
+						</div>
+						</div>
+
+						<div class="col-md-3">
+						<label class="form-label">Teléfono de trabajo</label>
+						<div class="form-control bg-light">
+							<span id="txtTutorTelTrabajo"></span>
+						</div>
+						</div>
+
+					</div>
+					</div>
+
+					<div class="card mb-4 mt-4">
+					<div class="card-header fw-bold text-uppercase">Datos escolares</div>
+
+					<div class="card-body row g-3">
+
+						<div class="col-md-8">
+						<label class="form-label">Escuela de procedencia</label>
+						<div class="form-control bg-light">
+							<span id="txtEscProcedencia"></span>
+						</div>
+						</div>
+
+						<div class="col-md-4">
+						<label class="form-label">Carrera cursada</label>
+						<div class="form-control bg-light">
+							<span id="txtEscCarrera"></span>
+						</div>
+						</div>
+
+						<div class="col-md-4">
+						<label class="form-label">Estado</label>
+						<div class="form-control bg-light">
+							<span id="txtEscEstado"></span>
+						</div>
+						</div>
+
+						<div class="col-md-4">
+						<label class="form-label">Municipio</label>
+						<div class="form-control bg-light">
+							<span id="txtEscMunicipio"></span>
+						</div>
+						</div>
+
+						<div class="col-md-2">
+						<label class="form-label">Promedio</label>
+						<div class="form-control bg-light">
+							<span id="txtEscPromedio"></span>
+						</div>
+						</div>
+
+						<div class="col-md-2">
+						<label class="form-label">Fecha de inicio</label>
+						<div class="form-control bg-light">
+							<span id="txtEscFechaInicio"></span>
+						</div>
+						</div>
+
+						<div class="col-md-2">
+						<label class="form-label">Fecha de terminación</label>
+						<div class="form-control bg-light">
+							<span id="txtEscFechaFin"></span>
+						</div>
+						</div>
+
+						<div class="col-md-3">
+						<label class="form-label">Sistema de estudio</label>
+						<div class="form-control bg-light">
+							<span id="txtEscSistema"></span>
+						</div>
+						</div>
+
+						<div class="col-md-3">
+						<label class="form-label">Tipo de preparatoria</label>
+						<div class="form-control bg-light">
+							<span id="txtEscTipoPrepa"></span>
+						</div>
+						</div>
+
+					</div>
+					</div>
+
+					<div class="card mb-4 mt-4">
+					<div class="card-header fw-bold text-uppercase">Otros datos</div>
+
+					<div class="card-body row g-3">
+
+						<div class="col-md-6">
+						<label class="form-label fw-semibold">¿Contaba con beca?</label>
+						<div class="form-control bg-light">
+							<span id="txtBeca"></span>
+						</div>
+						</div>
+
+						<div class="col-md-6">
+						<label class="form-label">Tipo de beca</label>
+						<div class="form-control bg-light">
+							<span id="txtTipoBeca"></span>
+						</div>
+						<small class="text-muted">Se muestra “—” cuando no aplica.</small>
+						</div>
+
+						<div class="col-md-6">
+						<label class="form-label fw-semibold">¿Proviene de alguna comunidad indígena?</label>
+						<div class="form-control bg-light">
+							<span id="txtOrigenIndigena"></span>
+						</div>
+						</div>
+
+						<div class="col-md-6">
+						<label class="form-label fw-semibold">¿Habla lengua indígena?</label>
+						<div class="form-control bg-light">
+							<span id="txtLenguaIndigena"></span>
+						</div>
+						</div>
+
+						<div class="col-md-6">
+						<label class="form-label">¿Cuál?</label>
+						<div class="form-control bg-light">
+							<span id="txtLenguaCual"></span>
+						</div>
+						</div>
+
+						<div class="col-md-6">
+						<label class="form-label fw-semibold">¿Padece alguna discapacidad?</label>
+						<div class="form-control bg-light">
+							<span id="txtDiscapacidad"></span>
+						</div>
+						</div>
+
+						<div class="col-md-6">
+						<label class="form-label">Especifique</label>
+						<div class="form-control bg-light">
+							<span id="txtDiscapEspec"></span>
+						</div>
+						</div>
+
+						<div class="col-md-6">
+						<label class="form-label fw-semibold">¿Padece alguna enfermedad?</label>
+						<div class="form-control bg-light">
+							<span id="txtEnfermedad"></span>
+						</div>
+						</div>
+
+						<div class="col-md-6">
+						<label class="form-label">Especifique</label>
+						<div class="form-control bg-light">
+							<span id="txtEnfEspec"></span>
+						</div>
+						</div>
+
+					</div>
+					</div>
+
+					<div class="d-flex justify-content-end">
+					<button id="btnEnviarSolicitud" class="btn btn-primary">
+					Enviar solicitud
+					</button>
+
+					</div>
+				</div>
+			</main>
+			<footer class="footer">
+				<div class="container-fluid">
+					<div class="row text-muted">
+						<div class="col-6 text-start">
+							<p class="mb-0">
+									<a class="text-muted" href="https://itace.edu.mx/" target="_blank"><strong>Instituto Tamaulipeco de Capacitación para el Empleo</strong></a> &copy;
+							</p>
+						</div>
+						<div class="col-6 text-end">
+							<ul class="list-inline">
+								<li class="list-inline-item">
+									<a class="text-muted" href="https://ejemplo/" target="_blank">Soporte</a>
+								</li>
+								<li class="list-inline-item">
+									<a class="text-muted" href="https://ejemplo/" target="_blank">Ayuda</a>
+								</li>
+								<li class="list-inline-item">
+									<a class="text-muted" href="https://ejemplo/" target="_blank">Privacidad</a>
+								</li>
+								<li class="list-inline-item">
+									<a class="text-muted" href="https://ejemplo/" target="_blank">Terminos</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</footer>
+		</div>
+	</div>
+
+	<script src="js/app.js"></script>
+	<script src="/src/js/modules/storage.js"></script>
+	<script src="/src/js/modules/confirmacion.js"></script>
+	<script>
+	(function () {
+		// Mapea cada archivo al índice del paso
+		const stepByPage = {
+		"index.html": 0,
+		"alumno.html": 1,
+		"finalizar.html": 2
+		};
+
+		// Detecta el archivo actual (si estás en /, lo tratamos como index.html)
+		const path = window.location.pathname;
+		const page = (path.split("/").pop() || "index.html").toLowerCase();
+
+		// Si la página no está en el mapa, no hacemos nada
+		if (!(page in stepByPage)) return;
+
+		const current = stepByPage[page];
+		const steps = document.querySelectorAll("#wizardSteps .step-vertical");
+
+		steps.forEach((el) => {
+		const i = Number(el.dataset.step);
+		el.classList.remove("active", "complete");
+		if (i < current) el.classList.add("complete");
+		if (i === current) el.classList.add("active");
+		});
+	})();
+	</script>
+
+</body>
+
+</html>
