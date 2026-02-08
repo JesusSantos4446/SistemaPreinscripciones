@@ -593,18 +593,15 @@
 	<script src="/src/js/modules/confirmacion.js"></script>
 	<script>
 	(function () {
-		// Mapea cada archivo al índice del paso
 		const stepByPage = {
 		"index.html": 0,
 		"alumno.html": 1,
 		"finalizar.html": 2
 		};
 
-		// Detecta el archivo actual (si estás en /, lo tratamos como index.html)
 		const path = window.location.pathname;
 		const page = (path.split("/").pop() || "index.html").toLowerCase();
 
-		// Si la página no está en el mapa, no hacemos nada
 		if (!(page in stepByPage)) return;
 
 		const current = stepByPage[page];
