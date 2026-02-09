@@ -86,7 +86,6 @@
     setTextByIds(["fechaEnvio", "cpFechaEnvio"], fechaEnvio);
   }
 
-  // ===== NUEVO: Nombre completo desde storage.js =====
   function leerPreinscripcionLS() {
     // Usa la misma key que tu storage.js
     const LS_KEY = "preinscripcion_activa";
@@ -113,7 +112,6 @@
 
     setTextByIds(["cpNombre"], nombreCompleto);
   }
-  // ================================================
 
   function initBtnEnviar() {
     const btn = document.getElementById("btnEnviar");
@@ -150,7 +148,7 @@
     initWizardSteps();
     initFolioITC();
     initFechaEnvio();
-    initNombreAspirante(); // <-- aquí se pinta el nombre
+    initNombreAspirante(); 
     initBtnEnviar();
   });
 })();

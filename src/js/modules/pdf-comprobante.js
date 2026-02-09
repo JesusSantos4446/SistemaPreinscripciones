@@ -33,6 +33,114 @@
     return (v || "").toString().trim().toUpperCase();
   }
 
+  // ====== LS payload (misma key que tu proyecto) ======
+  function leerPreinscripcionLS() {
+    const LS_KEY = "preinscripcion_activa";
+    try {
+      const raw = localStorage.getItem(LS_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch (e) {
+      console.error("Error leyendo LocalStorage:", e);
+      return null;
+    }
+  }
+
+  // ====== Generación automática ======
+  function getGeneracionAuto() {
+    const start = new Date().getFullYear();
+    return `${start}-${start + 3}`;
+  }
+
+  // ====== Normaliza carrera (evita "GENERAL" por default) ======
+  function normalizeCarrera(v) {
+    const s = (v ?? "").toString().trim();
+    if (!s) return "";
+    const up = s.toUpperCase();
+    if (up === "GENERAL" || up === "—" || up === "SIN SELECCIÓN") return "";
+    return s;
+  }
+
+  // ====== Fecha / edad helpers ======
+  function parseDateLoose(value) {
+    const s = (value || "").toString().trim();
+    if (!s) return null;
+
+    // YYYY-MM-DD
+    if (/^\d{4}-\d{2}-\d{2}$/.test(s)) {
+      const d = new Date(s + "T00:00:00");
+      return isNaN(d.getTime()) ? null : d;
+    }
+
+    // DD/MM/YYYY o DD-MM-YYYY
+    const m = s.match(/^(\d{2})[\/-](\d{2})[\/-](\d{4})$/);
+    if (m) {
+      const dd = Number(m[1]);
+      const mm = Number(m[2]);
+      const yyyy = Number(m[3]);
+      const d = new Date(yyyy, mm - 1, dd);
+      return isNaN(d.getTime()) ? null : d;
+    }
+
+    const d = new Date(s);
+    return isNaN(d.getTime()) ? null : d;
+  }
+
+  function calcEdad(fechaNacStr) {
+    const d = parseDateLoose(fechaNacStr);
+    if (!d) return "—";
+
+    const now = new Date();
+    let age = now.getFullYear() - d.getFullYear();
+    const m = now.getMonth() - d.getMonth();
+    if (m < 0 || (m === 0 && now.getDate() < d.getDate())) age--;
+    return String(age);
+  }
+
+  function formatFechaMX(fechaNacStr) {
+    const d = parseDateLoose(fechaNacStr);
+    if (!d) return "—";
+    return d.toLocaleDateString("es-MX", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+  }
+
+  function buildNombreCompleto(g = {}) {
+    return [g.nombres, g.apPaterno, g.apMaterno]
+      .map((x) => (x || "").toString().trim())
+      .filter(Boolean)
+      .join(" ");
+  }
+
+  function buildDomicilioLine(dom = {}) {
+    const calle = (dom.calle || "").trim();
+    const numExt = (dom.numExt || "").toString().trim();
+    const numInt = (dom.numInt || "").toString().trim();
+    const colonia = (dom.colonia || "").trim();
+    const cp = (dom.cp || "").toString().trim();
+
+    const num = [numExt && `#${numExt}`, numInt && `Int. ${numInt}`]
+      .filter(Boolean)
+      .join(" ");
+    const p1 = [calle, num].filter(Boolean).join(" ");
+    const p2 = [colonia, cp && `C.P. ${cp}`].filter(Boolean).join(", ");
+
+    return [p1, p2].filter(Boolean).join(" — ");
+  }
+
+  // ====== Texto en una línea, bajando font si no cabe ======
+  function textFitOneLine(doc, text, x, y, maxW, startSize = 11, minSize = 7.5) {
+    let size = startSize;
+    doc.setFontSize(size);
+    while (size > minSize && doc.getTextWidth(text) > maxW) {
+      size -= 0.5;
+      doc.setFontSize(size);
+    }
+    doc.text(text, x, y);
+    return size;
+  }
+
   function imgToDataURL(imgEl) {
     return new Promise((resolve) => {
       if (!imgEl) return resolve(null);
@@ -119,7 +227,6 @@
     return y + clipped.length * localLineH;
   }
 
-  // 🔥 GLOBAL para onclick
   window.convertirPdf = async function convertirPdf() {
     try {
       if (!window.jspdf || typeof window.jspdf.jsPDF !== "function") {
@@ -135,20 +242,54 @@
       const left = CONFIG.marginLeft;
       const right = CONFIG.marginRight;
 
-      // Columna derecha para título
       const gap = 10;
       const rightColumnX = CONFIG.logoX + CONFIG.logoW + gap;
       const titleXRight = pageW - right;
       const titleMaxW = titleXRight - rightColumnX;
 
-      // Datos principales
+      // ====== Folio ======
       const folio = _upper(
         _safe(_txt("cpFolio") || _txt("folioGenerado") || _ls("itc_folio_actual"))
       );
-      const nombre = _upper(_safe(_txt("cpNombre")));
-      const carrera = _upper(_safe(_txt("cpEspecialidad")));
 
-      // Logo
+      // ====== Datos desde LS ======
+      const payload = leerPreinscripcionLS();
+      const d = payload?.datos || {};
+      const g = d.generales || {};
+      const dom = d.domicilio || {};
+      const e = d.escolares || {};
+
+      const nombreCompletoLS = buildNombreCompleto(g);
+      const nombre = _upper(_safe(_txt("cpNombre") || nombreCompletoLS));
+
+      // ✅ Carrera solicitada (evita GENERAL)
+      const carreraPrefer = normalizeCarrera(e.carreraSolicitada);
+      const carreraFallback = normalizeCarrera(e.carrera);
+      const carreraLS = carreraPrefer || carreraFallback || "";
+      const carrera = _upper(_safe(_txt("cpEspecialidad") || carreraLS));
+
+      // ====== Datos aspirante ======
+      const aspNombreCompleto = _upper(_safe(buildNombreCompleto(g)));
+      const aspGenero = _upper(_safe(g.genero));
+      const aspFechaNacFmt = _safe(formatFechaMX(g.fechaNacimiento));
+      const aspEdad = _safe(calcEdad(g.fechaNacimiento));
+      const aspCurp = _upper(_safe(g.curp));
+      const aspTipoSangre = _upper(_safe(g.tipoSangre));
+
+      const aspProcedencia = _upper(_safe(e.procedencia));
+      const aspPromedio = _safe(e.promedio);
+
+      const domEstado = _upper(_safe(dom.estado));
+      const domMunicipio = _upper(_safe(dom.municipio));
+      const domLinea = _upper(_safe(buildDomicilioLine(dom)));
+
+      const anioConcluyo = (() => {
+        const fin = (e.fechaFin || "").toString().trim();
+        const dt = parseDateLoose(fin);
+        return dt ? String(dt.getFullYear()) : "—";
+      })();
+
+      // ====== Logo ======
       const logoEl = document.getElementById("pdfLogo");
       const logoDataUrl = await imgToDataURL(logoEl);
       if (logoDataUrl) {
@@ -162,7 +303,7 @@
         );
       }
 
-      // Título
+      // ====== Encabezado ======
       doc.setFont("helvetica", "bold");
       doc.setFontSize(18);
       const title = "FICHA DE PREINSCRIPCION ITACE";
@@ -173,11 +314,11 @@
       const afterTitleY = CONFIG.titleY + (titleLines.length - 1) * titleLineH;
 
       doc.setFontSize(12);
-      doc.text("GENERACIÓN 2025-2028", titleXRight, afterTitleY + 10, {
+      doc.text(`GENERACIÓN ${getGeneracionAuto()}`, titleXRight, afterTitleY + 10, {
         align: "right",
       });
 
-      // Bloque superior
+      // ====== Datos generales arriba ======
       doc.setFontSize(12);
       const lineH = 12 * 0.3527777778 * 1.5;
 
@@ -201,14 +342,13 @@
       doc.setFont("helvetica", "normal");
       doc.text(carrera, left + 22, y);
 
-      // Línea punteada
       y += lineH * 1.2;
       doc.setLineWidth(0.6);
       doc.setLineDashPattern([4, 3], 0);
       doc.line(left, y, pageW - right, y);
       doc.setLineDashPattern([], 0);
 
-      // DATOS DEL ASPIRANTE
+      // ====== Sección aspirante ======
       y += 12;
       doc.setFont("helvetica", "bold");
       doc.setFontSize(12);
@@ -217,61 +357,102 @@
       y += 18;
       doc.setFontSize(11);
 
+      // ====== Field pegado al ":" (sin offsets fijos) ======
+      function fieldTight(x, yy, label, value = "", gapPx = 3) {
+        doc.setFont("helvetica", "bold");
+        doc.text(label, x, yy);
+        const labelW = doc.getTextWidth(label);
+        doc.setFont("helvetica", "normal");
+        doc.text(_safe(value), x + labelW + gapPx, yy);
+      }
+
       const col1X = left;
       const col2X = left + 62;
       const col3X = left + 120;
-      const colEdadX = pageW - right - 27;
+      const rightEdge = pageW - right;
 
-      const valueOffsetWide = 60;
-      const valueOffsetShort = 38;
-
-      function field(x, yy, label, value = "", offset = 52) {
-        doc.setFont("helvetica", "bold");
-        doc.text(label, x, yy);
-        doc.setFont("helvetica", "normal");
-        if (value) doc.text(String(value), x + offset, yy);
-      }
-
-      field(col1X, y, "Nombre:");
+      // === Nombre ===
+      fieldTight(col1X, y, "Nombre:", aspNombreCompleto, 4);
       y += 10;
 
-      field(col1X, y, "Género:");
-      field(col2X, y, "Fecha de Nacimiento:", "", valueOffsetWide);
-      field(colEdadX, y, "Edad:", "", valueOffsetShort);
+      // === Género / Fecha / Edad (MISMA LÍNEA, SIN HUECOS) ===
+      fieldTight(col1X, y, "Género:", aspGenero, 4);
+
+      doc.setFont("helvetica", "bold");
+      const fechaLabel = "Fecha de Nacimiento:";
+      doc.text(fechaLabel, col2X, y);
+      const fechaLabelW = doc.getTextWidth(fechaLabel);
+
+      doc.setFont("helvetica", "normal");
+      const fechaGap = 7; // mover fecha unos puntos a la derecha
+      const fechaX = col2X + fechaLabelW + fechaGap;
+      doc.text(_safe(aspFechaNacFmt), fechaX, y);
+
+      // Edad pegada al margen derecho (respetando margen)
+      doc.setFont("helvetica", "bold");
+      const edadLabel = "Edad:";
+      const edadLabelW = doc.getTextWidth(edadLabel);
+      doc.setFont("helvetica", "normal");
+      const edadVal = _safe(aspEdad);
+      const edadValW = doc.getTextWidth(edadVal);
+      const edadGap = 3;
+
+      const edadX = rightEdge - (edadLabelW + edadGap + edadValW);
+
+      doc.setFont("helvetica", "bold");
+      doc.text(edadLabel, edadX, y);
+      doc.setFont("helvetica", "normal");
+      doc.text(edadVal, edadX + edadLabelW + edadGap, y);
+
+      y += 10; // ✅ SOLO una vez para evitar el hueco grande
+
+      // === CURP / Tipo de sangre ===
+      fieldTight(col1X, y, "CURP:", aspCurp, 4);
+      fieldTight(col3X, y, "Tipo de sangre:", aspTipoSangre, 4);
       y += 10;
 
-      field(col1X, y, "CURP:");
-      field(col3X, y, "Tipo de sangre:", "", valueOffsetShort);
+      // === Secundaria de procedencia (auto-fit) ===
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(11);
+      const secLabel = "Secundaria de procedencia:";
+      doc.text(secLabel, col1X, y);
+
+      const secValueX = col1X + doc.getTextWidth(secLabel) + 4;
+      const secMaxW = pageW - right - secValueX;
+
+      doc.setFont("helvetica", "normal");
+      textFitOneLine(doc, _safe(aspProcedencia), secValueX, y, secMaxW, 11, 7.5);
+
+      doc.setFontSize(11);
       y += 10;
 
-      field(col1X, y, "Secundaria de procedencia:");
+      // === Año concluyó / Promedio ===
+      fieldTight(col1X, y, "Año en el que concluyo la secundaria:", anioConcluyo, 4);
+      fieldTight(col3X, y, "Promedio:", aspPromedio, 4);
       y += 10;
 
-      field(col1X, y, "Año en el que concluyo la secundaria:");
-      field(col3X, y, "Promedio:", "", valueOffsetShort);
+      // === Domicilio ===
+      fieldTight(col1X, y, "Domicilio del alumno:", domLinea, 4);
       y += 10;
 
-      field(col1X, y, "Domicilio del alumno:");
-      y += 10;
-
-      field(col1X, y, "Ciudad:");
-      field(col2X, y, "Estado:");
+      // === Ciudad / Estado ===
+      fieldTight(col1X, y, "Ciudad:", domMunicipio, 4);
+      fieldTight(col2X, y, "Estado:", domEstado, 4);
       y += 14;
 
-      // Línea punteada inferior
+      // ====== Divisor ======
       doc.setLineWidth(0.6);
       doc.setLineDashPattern([4, 3], 0);
       doc.line(left, y, pageW - right, y);
       doc.setLineDashPattern([], 0);
 
-      // ===== DOCUMENTOS + CUADROS =====
       y += 9;
 
+      // ====== Documentos entregados ======
       doc.setFont("helvetica", "bold");
       doc.setFontSize(11);
       doc.text("DOCUMENTOS ENTREGADOS:", left, y);
 
-      // Lista (compacta)
       doc.setFont("helvetica", "normal");
       doc.setFontSize(9.5);
 
@@ -296,9 +477,7 @@
         ly += listStep;
       });
 
-      const leftBottom2 = ly + 1;
-
-      // Cuadro derecho
+      // ====== Caja certificado ======
       const boxW = 85;
       const boxH = 58;
       const boxX = pageW - right - boxW;
@@ -317,9 +496,12 @@
       doc.setFontSize(8);
 
       const header = "SOLO EN CASO DE FALTA DE CERTIFICADO DE SECUNDARIA";
-      doc.text(doc.splitTextToSize(header, innerW), boxX + boxW / 2, innerY + 2.2, {
-        align: "center",
-      });
+      doc.text(
+        doc.splitTextToSize(header, innerW),
+        boxX + boxW / 2,
+        innerY + 2.2,
+        { align: "center" }
+      );
 
       doc.text("Razón por la que no la tiene:", innerX, innerY + 11);
 
@@ -350,8 +532,7 @@
         { align: "center" }
       );
 
-      // ===== Cuadro inferior (misma hoja) =====
-      // (IMPORTANTE: variables con nombres únicos para NO redeclarar)
+      // ====== Cuadro inferior ======
       const bigW2 = pageW - left - right;
       const bigX2 = left;
 
@@ -359,8 +540,9 @@
       const rightBlockBottom2 = boxY + boxH;
 
       const GAP_BELOW = 6;
-      const EXTRA_DOWN = 1.5; // ~4 puntos
-      let bigY2 = Math.max(leftBlockBottom2, rightBlockBottom2) + GAP_BELOW + EXTRA_DOWN;
+      const EXTRA_DOWN = 1.5;
+      let bigY2 =
+        Math.max(leftBlockBottom2, rightBlockBottom2) + GAP_BELOW + EXTRA_DOWN;
 
       const t1b =
         "En caso de tener tramite de corrección, no coincidir tu CURP con acta de nacimiento y/o certificado de secundaria; " +
@@ -371,8 +553,7 @@
         "respetar el grupo y turno que le sea asignado y mantener buena conducta. El ingreso sólo depende de aprobar el examen de admision.";
 
       const bigFontSize = 8;
-      const bigLineGap = 1.00;
-      const boxLineH = bigFontSize * 0.3527777778 * bigLineGap;
+      const bigLineGap = 1.0;
 
       const bigPad2 = 6;
       const bigInnerX2 = bigX2 + bigPad2;
@@ -384,13 +565,13 @@
       const lines1 = doc.splitTextToSize(t1b, bigInnerW2);
       const lines2 = doc.splitTextToSize(t2b, bigInnerW2);
 
+      const boxLineH = bigFontSize * 0.3527777778 * bigLineGap;
       const linesTotal = lines1.length + 1 + lines2.length;
       const neededInnerH = linesTotal * boxLineH + 2;
 
       let bigH2 = neededInnerH + 9;
 
-      // No te manda a otra hoja: lo máximo es (pageH - 2mm)
-      const maxHInPage = (pageH - 2) - bigY2;
+      const maxHInPage = pageH - 2 - bigY2;
       if (bigH2 > maxHInPage) bigH2 = maxHInPage;
 
       doc.setLineWidth(0.4);
@@ -418,12 +599,10 @@
         bigInnerX2,
         yy2,
         bigInnerW2,
-        (bigInnerY2 + bigInnerH2 - yy2),
+        bigInnerY2 + bigInnerH2 - yy2,
         bigFontSize,
         bigLineGap
       );
-
-      y = bigY2 + bigH2;
 
       const filename = `Ficha_ITACE_${folio}.pdf`;
       doc.save(filename);
@@ -433,5 +612,5 @@
     }
   };
 
-  console.log("COMPROBANTE PDF Generado con éxito", typeof window.convertirPdf);
+  console.log("COMPROBANTE PDF listo", typeof window.convertirPdf);
 })();
