@@ -53,122 +53,145 @@
 			<ul class="sidebar-nav">
 			<li class="sidebar-header"></li>
 
-			<li class="sidebar-item">
-				<div class="steps-vertical" id="wizardSteps">
+				 <li class="sidebar-item">
+      <div class="steps-vertical" id="wizardSteps">
 
-				<a href="index.html" class="step-vertical" data-step="0">
-					<div class="step-vertical-icon">
-					<i class="fa-solid fa-check"></i>
-					</div>
-					<div class="step-vertical-content">
-					<div class="step-vertical-title">Preinscripción</div>
-					<div class="step-vertical-desc">Datos iniciales</div>
-					</div>
-				</a>
+        <a class="step-vertical" data-step="0" href="index.html" aria-disabled="true">
+          <div class="step-vertical-icon">
+            <i class="fa-solid fa-check"></i>
+          </div>
+          <div class="step-vertical-content">
+            <div class="step-vertical-title">Preinscripción</div>
+            <div class="step-vertical-desc">Datos iniciales</div>
+          </div>
+        </a>
 
-				<a href="alumno.html" class="step-vertical" data-step="1">
-					<div class="step-vertical-icon">
-					<i class="fa-solid fa-user-check"></i>
-					</div>
-					<div class="step-vertical-content">
-					<div class="step-vertical-title">Confirmar datos</div>
-					<div class="step-vertical-desc">Verifica tu información</div>
-					</div>
-				</a>
+        <a class="step-vertical" data-step="1" href="documentos.html" aria-disabled="true">
+          <div class="step-vertical-icon">
+            <i class="fa-solid fa-file-lines"></i>
+          </div>
+          <div class="step-vertical-content">
+            <div class="step-vertical-title">Documentos</div>
+            <div class="step-vertical-desc">Carga de archivos</div>
+          </div>
+        </a>
 
-				<a href="finalizar.html" class="step-vertical" data-step="2">
-					<div class="step-vertical-icon">
-					<i class="fa-solid fa-flag-checkered"></i>
-					</div>
-					<div class="step-vertical-content">
-					<div class="step-vertical-title">Finalizar</div>
-					<div class="step-vertical-desc">Enviar solicitud</div>
-					</div>
-				</a>
+        <a class="step-vertical" data-step="2" href="alumno.html" aria-disabled="true">
+          <div class="step-vertical-icon">
+            <i class="fa-solid fa-user-check"></i>
+          </div>
+          <div class="step-vertical-content">
+            <div class="step-vertical-title">Confirmar datos</div>
+            <div class="step-vertical-desc">Verifica tu información</div>
+          </div>
+        </a>
 
-				</div>
-			</li>
-			</ul>
+        <a class="step-vertical" data-step="3" href="finalizar.html" aria-disabled="true">
+          <div class="step-vertical-icon">
+            <i class="fa-solid fa-flag-checkered"></i>
+          </div>
+          <div class="step-vertical-content">
+            <div class="step-vertical-title">Finalizar</div>
+            <div class="step-vertical-desc">Enviar solicitud</div>
+          </div>
+        </a>
 
-			<style>
-			.steps-vertical{
-				padding: 12px 14px 12px 18px;
-				margin: 8px 10px;
-				border-left: 3px solid rgba(255,255,255,.2);
-			}
+      </div>
+    </li>
+    </ul>
 
-			.step-vertical{
-				position: relative;
-				display: flex;
-				gap: 12px;
-				padding: 10px;
-				margin-bottom: 12px;
-				border-radius: .4rem;
-				text-decoration: none;
-				color: rgba(255,255,255,.9);
-				opacity: .55;
-			}
+    <style>
+      .steps-vertical{
+        padding: 12px 14px 12px 18px;
+        margin: 8px 10px;
+        border-left: 3px solid rgba(255,255,255,.2);
+      }
 
-			.step-vertical::before{
-				content: "";
-				position: absolute;
-				left: -11px;
-				top: 18px;
-				width: 12px;
-				height: 12px;
-				border-radius: 50%;
-				background: rgba(255,255,255,.3);
-			}
+      .step-vertical{
+        position: relative;
+        display: flex;
+        gap: 12px;
+        padding: 10px;
+        margin-bottom: 12px;
+        border-radius: .4rem;
+        text-decoration: none;
+        color: rgba(255,255,255,.9);
+        opacity: .55;
+        cursor: default;
+        pointer-events: none; /* 👈 clave: no se puede seleccionar/clicar */
+        user-select: none;    /* 👈 clave: no se puede seleccionar texto */
+      }
 
-			.step-vertical-icon{
-				width: 34px;
-				height: 34px;
-				display: grid;
-				place-items: center;
-				border-radius: .5rem;
-				background: rgba(255,255,255,.1);
-				flex: 0 0 34px;
-			}
+      .step-vertical::before{
+        content: "";
+        position: absolute;
+        left: -11px;
+        top: 18px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: rgba(255,255,255,.3);
+      }
 
-			.step-vertical-icon i{
-				font-size: 15px;
-				color: rgba(255,255,255,.95);
-			}
+      .step-vertical-icon{
+        width: 34px;
+        height: 34px;
+        display: grid;
+        place-items: center;
+        border-radius: .5rem;
+        background: rgba(255,255,255,.1);
+        flex: 0 0 34px;
+      }
 
-			.step-vertical-title{
-				font-size: .95rem;
-				font-weight: 600;
-				line-height: 1.1;
-			}
+      .step-vertical-icon i{
+        font-size: 15px;
+        color: rgba(255,255,255,.95);
+      }
 
-			.step-vertical-desc{
-				font-size: .78rem;
-				opacity: .8;
-				margin-top: 2px;
-			}
+      .step-vertical-title{
+        font-size: .95rem;
+        font-weight: 600;
+        line-height: 1.1;
+      }
 
-			.step-vertical.active{
-				opacity: 1;
-				background: rgba(255,255,255,.06);
-				border: 1px solid rgba(255,255,255,.12);
-			}
+      .step-vertical-desc{
+        font-size: .78rem;
+        opacity: .8;
+        margin-top: 2px;
+      }
 
-			.step-vertical.active::before{
-				background: #4D0218;
-			}
+      /* ✅ ACTIVO = VERDE */
+      .step-vertical.active{
+        opacity: 1;
+        background: rgba(25,135,84,.12);
+        border: 1px solid rgba(25,135,84,.35);
+      }
 
-			.step-vertical.complete{
-				opacity: 1;
-			}
+      .step-vertical.active::before{
+        background: #198754;
+      }
 
-			.step-vertical.complete::before{
-				background: #198754;
-			}
+      .step-vertical.active .step-vertical-icon{
+        background: rgba(25,135,84,.18);
+      }
 
-			.step-vertical.complete .step-vertical-icon i{
-				color: #198754;
-			}
-			</style>
+      .step-vertical.active .step-vertical-icon i{
+        color: #198754;
+      }
+
+      /* ✅ COMPLETADO (opcional) = VERDE MÁS MARCADO */
+      .step-vertical.complete{
+        opacity: 1;
+      }
+
+      .step-vertical.complete::before{
+        background: #198754;
+      }
+
+      .step-vertical.complete .step-vertical-icon i{
+        color: #198754;
+      }
+    </style>
 
 					
 			</nav>
@@ -180,9 +203,6 @@
 			</a>
 					<div class="navbar-collapse collapse">
 						<ul class="navbar-nav navbar-align">
-							<li class="nav-item dropdown">
-								<a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
-					<i class="align-middle" data-feather="settings"></i>
 				</a>
 
 				</nav>
@@ -262,18 +282,12 @@
 							</div>
 							<div class="col-6 text-end">
 								<ul class="list-inline">
-									<li class="list-inline-item">
-										<a class="text-muted" href="https://adminkit.io/" target="_blank">Soporte</a>
-									</li>
-									<li class="list-inline-item">
-										<a class="text-muted" href="https://adminkit.io/" target="_blank">Ayuda</a>
-									</li>
-									<li class="list-inline-item">
-										<a class="text-muted" href="https://adminkit.io/" target="_blank">Privacidad</a>
-									</li>
-									<li class="list-inline-item">
-										<a class="text-muted" href="https://adminkit.io/" target="_blank">Terminos</a>
-									</li>
+								<li class="list-inline-item">
+									<a class="text-muted" href="https://adminkit.io/" target="_blank">Soporte</a>
+								</li>
+								<li class="list-inline-item">
+									<a class="text-muted" href="/static/docs/AVISO-DE-PRIVACIDAD-ITACE.pdf"target="_blank">Aviso de Privacidad</a>
+								</li>
 								</ul>
 							</div>
 						</div>
