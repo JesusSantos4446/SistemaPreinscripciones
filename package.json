@@ -53,8 +53,8 @@
   ],
   "dependencies": {
     "@babel/polyfill": "7.12.1",
-    "@popperjs/core": "2.10.1",
-    "bootstrap": "5.1.1",
+    "@popperjs/core": "^2.11.8",
+    "bootstrap": "^5.3.8",
     "chart.js": "2.9.4",
     "feather-icons": "4.28.0",
     "flatpickr": "4.6.9",
@@ -75,16 +75,16 @@
     "css-minimizer-webpack-plugin": "3.0.2",
     "eslint": "7.32.0",
     "file-loader": "6.2.0",
-    "filemanager-webpack-plugin": "6.1.7",
+    "filemanager-webpack-plugin": "^9.0.1",
     "hard-source-webpack-plugin": "0.13.1",
     "mini-css-extract-plugin": "2.3.0",
-    "node-sass": "6.0.1",
     "postcss-loader": "6.1.1",
+    "sass": "^1.97.3",
     "sass-loader": "12.1.0",
     "terser-webpack-plugin": "5.2.4",
     "url-loader": "4.1.1",
-    "webpack": "5.55.1",
+    "webpack": "^5.105.2",
     "webpack-cli": "4.8.0",
-    "webpack-dev-server": "4.3.0"
+    "webpack-dev-server": "^5.2.3"
   }
 }
