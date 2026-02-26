@@ -16890,7 +16890,7 @@ body[data-theme=colored] .sidebar-link:hover i,body[data-theme=colored] .sidebar
 
 .sidebar-item.active .sidebar-link:hover,.sidebar-item.active>.sidebar-link {
     background: linear-gradient(90deg,rgba(59,125,221,.1),rgba(59,125,221,.088) 50%,transparent);
-    border-left-color: #3b7ddd;
+    border-left-color: #fff;
     color: #e9ecef
 }
 
